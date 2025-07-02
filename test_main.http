@@ -1,0 +1,27 @@
+# Test your FastAPI endpoints
+
+GET http://127.0.0.1:8000/tasks
+Accept: application/json
+Authorization: c2612715-cec8-49c8-bb1b-842e7e3d2be6
+
+###
+
+POST http://127.0.0.1:8000/tasks
+Accept: application/json
+Authorization: c2612715-cec8-49c8-bb1b-842e7e3d2be6
+Content-Type: application/json
+
+{
+  "content": "This is a test task"
+}
+
+###
+
+PATCH http://127.0.0.1:8000/tasks/cmchrtt1x000jutx94ljnbu5v
+Accept: application/json
+Authorization: c2612715-cec8-49c8-bb1b-842e7e3d2be6
+Content-Type: application/json
+
+{
+  "content": "This is a test task"
+}
