@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "npx prisma migrate dev",
-    "postinstall": "pip install prisma-client-py && prisma generate"
+    "postinstall": "prisma generate --generator=client"
   },
   "prisma": {
     "schema": "prisma/schema-sqlite.prisma"
