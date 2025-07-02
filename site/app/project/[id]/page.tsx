@@ -7,9 +7,17 @@ import { TaskList } from "@/components/task-list"
 import { GetTasks } from "@/lib/tasks"
 import { redirect } from "next/navigation"
 
-export default async function ProjectPage({ params }: { params: { id: string } }) {
+interface ProjectPageProps {
+    params: Promise<{
+        id: string
+    }>
+}
+
+export default async function ProjectPage({ params }: ProjectPageProps) {
+    const { id } = await params;
+
     const projects = await GetProjects()
-    const project = projects.find(p => p.id === params.id)
+    const project = projects.find(p => p.id === id)
 
     if (!project) return redirect("/")
 
