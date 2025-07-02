@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  backend:
+    image: hss-sae-tasks-backend:latest
+    container_name: hss-sae-tasks-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/dev.sqlite
+    volumes:
+      - db_data:/data
+
+  frontend:
+    image: hss-sae-tasks-frontend:latest
+    container_name: hss-sae-tasks-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: sqlite:////data/dev.sqlite
+      NODE_ENV: production
+    volumes:
+      - db_data:/data
+
+volumes:
+  db_data:

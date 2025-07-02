@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:migrate": "npx prisma migrate dev",
-    "postinstall": "prisma generate --generator=client"
+    "db:migrate": "npx prisma migrate dev"
   },
   "prisma": {
     "schema": "prisma/schema-sqlite.prisma"

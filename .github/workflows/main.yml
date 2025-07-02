@@ -25,9 +25,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Build Docker image
+      - name: Build Backend Docker image
         run: |
-          docker build -t ${{ github.event.repository.name }}:latest .
+          docker build -t ${{ github.event.repository.name }}-backend:latest .
+      - name: Build Frontend Docker image
+        run: |
+          docker build -t ${{ github.event.repository.name }}-frontend:latest ./site
       - name: Stop and remove existing containers
         run: |
           cd /home
@@ -35,6 +38,5 @@ jobs:
       - name: Start containers with updated image
         run: |
           cd /home
-          export DATABASE_URL=file:./data/dev.sqlite
           docker compose up -d
           docker image prune -f
