@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run Semantic Release
+        run: npx semantic-release
+        id: semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ github.event.repository.name }}:latest .
+      - name: Stop and remove existing containers
+        run: |
+          cd /home
+          docker compose down
+      - name: Start containers with updated image
+        run: |
+          cd /home
+          export DATABASE_URL=file:./data/dev.sqlite
+          docker compose up -d
+          docker image prune -f

@@ -1,0 +1,30 @@
+{
+    "name": "hss-sae-tasks",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Tynopia/hss-sae-tasks.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Tynopia/hss-sae-tasks/issues"
+    },
+    "homepage": "https://github.com/Tynopia/hss-sae-tasks#readme",
+    "description": "",
+    "release": {
+        "branches": [
+            "main"
+        ],
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            "@semantic-release/github"
+        ]
+    }
+}
