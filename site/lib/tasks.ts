@@ -7,7 +7,6 @@ const API_URL = process.env.API_URL
 
 export async function GetTasks(projectId: string) {
     const session = await auth()
-    const token = (session as any)?.sessionToken as string
 
     const url = new URL(`/projects/${projectId}/tasks`, API_URL)
     if (projectId) {
@@ -17,14 +16,13 @@ export async function GetTasks(projectId: string) {
     return fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token!
+            "Authorization": session.sessionToken
         }
     }).then(res => res.json() as Promise<Task[]>)
 }
 
 export async function CreateTask(projectId: string, data: { title: string, description: string, dueDate?: string | null, status: string }) {
     const session = await auth()
-    const token = (session as any)?.sessionToken as string
 
     const url = new URL(`/projects/${projectId}/tasks`, API_URL)
 
@@ -32,7 +30,7 @@ export async function CreateTask(projectId: string, data: { title: string, descr
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token!
+            "Authorization": session.sessionToken
         },
         body: JSON.stringify(data)
     })).ok
@@ -43,7 +41,6 @@ export async function UpdateTask(projectId: string, taskId: string, update: Part
     data: Task
 }> {
     const session = await auth()
-    const token = (session as any)?.sessionToken as string
 
     const url = new URL(`/projects/${projectId}/tasks/${taskId}`, API_URL)
 
@@ -53,7 +50,7 @@ export async function UpdateTask(projectId: string, taskId: string, update: Part
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token!
+            "Authorization": session.sessionToken
         },
         body: JSON.stringify(update)
     })
@@ -66,14 +63,13 @@ export async function UpdateTask(projectId: string, taskId: string, update: Part
 
 export async function DeleteTask(projectId: string, taskId: string) {
     const session = await auth()
-    const token = (session as any)?.sessionToken as string
 
     const url = new URL(`/projects/${projectId}/tasks/${taskId}`, API_URL)
 
     return (await fetch(url, {
         method: "DELETE",
         headers: {
-            "Authorization": token!
+            "Authorization": session.sessionToken
         }
     })).ok
 }

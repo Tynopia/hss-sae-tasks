@@ -7,21 +7,19 @@ const API_URL = process.env.API_URL;
 
 export async function GetProjects() {
     const session = await auth();
-    const token = (session as any)?.sessionToken as string;
 
     const url = new URL("/projects", API_URL);
 
     return fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token!
+            "Authorization": session.sessionToken
         }
     }).then(res => res.json() as Promise<Project[]>);
 }
 
 export async function CreateProject(name: string) {
     const session = await auth();
-    const token = (session as any)?.sessionToken as string;
 
     const url = new URL("/projects", API_URL);
 
@@ -29,7 +27,7 @@ export async function CreateProject(name: string) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token!
+            "Authorization": session.sessionToken
         },
         body: JSON.stringify({ name })
     })
@@ -42,7 +40,6 @@ export async function CreateProject(name: string) {
 
 export async function DeleteProject(id: string) {
     const session = await auth();
-    const token = (session as any)?.sessionToken as string;
 
     const url = new URL(`/projects/${id}`, API_URL);
 
@@ -50,7 +47,7 @@ export async function DeleteProject(id: string) {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": token!
+            "Authorization": session.sessionToken
         }
     })).ok;
 } 

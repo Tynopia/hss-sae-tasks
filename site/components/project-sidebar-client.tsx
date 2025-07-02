@@ -15,9 +15,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogT
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { CreateProject, DeleteProject } from "@/lib/projects"
+import { Project } from "@prisma/client"
 
 interface ProjectSidebarClientProps {
-    initialProjects: any[]
+    initialProjects: Project[]
 }
 
 function ProjectSidebarClient({ initialProjects }: ProjectSidebarClientProps) {
@@ -81,7 +82,7 @@ function AddProjectDialog() {
 
         const { ok, data } = await CreateProject(name)
         setLoading(false)
-        
+
         if (ok) {
             setOpen(false)
             setName("")

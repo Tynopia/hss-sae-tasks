@@ -15,7 +15,7 @@ import { GetProjects } from "@/lib/projects"
 import ProjectSidebarClient, { AddProjectDialog } from "@/components/project-sidebar-client"
 import SidebarCalendar from "@/components/sidebar-calendar"
 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> { }
+type AppSidebarProps = React.ComponentProps<typeof Sidebar>;
 
 export async function AppSidebar(props: AppSidebarProps) {
     const session = await auth()
@@ -24,7 +24,7 @@ export async function AppSidebar(props: AppSidebarProps) {
     return (
         <Sidebar {...props}>
             <SidebarHeader className="border-sidebar-border h-16 border-b">
-                <NavUser user={session?.user!} />
+                <NavUser user={session!.user!} />
             </SidebarHeader>
             <SidebarContent>
                 <SidebarCalendar />
