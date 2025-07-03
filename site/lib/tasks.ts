@@ -16,7 +16,7 @@ export async function GetTasks(projectId: string) {
     return fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": session!.sessionToken
+            "Authorization": session?.sessionToken ?? ""
         }
     }).then(res => res.json() as Promise<Task[]>)
 }
@@ -30,7 +30,7 @@ export async function CreateTask(projectId: string, data: { title: string, descr
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": session!.sessionToken
+            "Authorization": session?.sessionToken ?? ""
         },
         body: JSON.stringify(data)
     })).ok
@@ -50,7 +50,7 @@ export async function UpdateTask(projectId: string, taskId: string, update: Part
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": session!.sessionToken
+            "Authorization": session?.sessionToken ?? ""
         },
         body: JSON.stringify(update)
     })
@@ -69,7 +69,7 @@ export async function DeleteTask(projectId: string, taskId: string) {
     return (await fetch(url, {
         method: "DELETE",
         headers: {
-            "Authorization": session!.sessionToken
+            "Authorization": session?.sessionToken ?? ""
         }
     })).ok
 }

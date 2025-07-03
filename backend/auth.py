@@ -22,6 +22,7 @@ class AuthHelper:
                 "user": True
             }
         )
+        print(result)
 
         if result is None:
             return None

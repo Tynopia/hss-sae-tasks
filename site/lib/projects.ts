@@ -13,7 +13,7 @@ export async function GetProjects() {
     return fetch(url, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": session!.sessionToken
+            "Authorization": session?.sessionToken ?? ""
         }
     }).then(res => res.json() as Promise<Project[]>);
 }
@@ -27,7 +27,7 @@ export async function CreateProject(name: string) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": session!.sessionToken
+            "Authorization": session?.sessionToken ?? ""
         },
         body: JSON.stringify({ name })
     })
@@ -47,7 +47,7 @@ export async function DeleteProject(id: string) {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": session!.sessionToken
+            "Authorization": session?.sessionToken ?? ""
         }
     })).ok;
 } 
