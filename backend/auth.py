@@ -11,9 +11,7 @@ class AuthHelper:
         self.prisma = prisma
 
     async def __get_user_from_token(self, authorization: str) -> Optional[User]:
-        print(authorization)
         results = await self.prisma.session.find_many()
-        print(results)
         result = await self.prisma.session.find_unique(
             where={
                 "sessionToken": authorization
@@ -22,7 +20,6 @@ class AuthHelper:
                 "user": True
             }
         )
-        print(result)
 
         if result is None:
             return None
