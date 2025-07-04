@@ -1,13 +1,17 @@
 "use client"
 
-import { useSearchParams, useRouter } from "next/navigation"
-import { DateRange } from "react-day-picker"
 import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
+import { useSearchParams, useRouter } from "next/navigation"
+import { DateRange } from "react-day-picker"
 
-function parseDateLocal(string?: string): Date | undefined {
-    if (!string) return undefined;
-    const [y, m, d] = string.split('-').map(Number);
+function formatDateLocal(date: Date): string {
+    return date.toLocaleDateString('sv-SE')
+}
+
+function parseDateLocal(str?: string): Date | undefined {
+    if (!str) return undefined;
+    const [y, m, d] = str.split('-').map(Number);
     if (!y || !m || !d) return undefined;
     return new Date(y, m - 1, d);
 }
@@ -22,19 +26,16 @@ export default function SidebarCalendar() {
 
     function setDateRange(range: DateRange | undefined) {
         const params = new URLSearchParams(Array.from(searchParams.entries()))
-        
         if (range?.from) {
-            params.set("from", range.from.toLocaleDateString())
+            params.set("from", formatDateLocal(range.from))
         } else {
             params.delete("from")
         }
-
         if (range?.to) {
-            params.set("to", range.to.toLocaleDateString())
+            params.set("to", formatDateLocal(range.to))
         } else {
             params.delete("to")
         }
-
         router.replace("?" + params.toString())
     }
 
