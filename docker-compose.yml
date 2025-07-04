@@ -8,9 +8,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: sqlite:////data/dev.sqlite
+      DATABASE_URL: file:/data/dev.sqlite
     volumes:
-      - db_data:/data
+      - lite_db_data:/data
 
   frontend:
     image: hss-sae-tasks-frontend:latest
@@ -19,10 +19,15 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: sqlite:////data/dev.sqlite
+      AUTH_URL: https://clearstack.net/api/auth
+      DATABASE_URL: file:/data/dev.sqlite
       NODE_ENV: production
+      AUTH_TRUST_HOST: true
+      API_URL: https://backend.clearstack.net
+      AUTH_SECRET: ...
+      AUTH_RESEND_KEY: ...
     volumes:
-      - db_data:/data
+      - lite_db_data:/data
 
 volumes:
-  db_data:
+  lite_db_data:

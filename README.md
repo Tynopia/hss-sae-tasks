@@ -90,4 +90,57 @@ Beim Erstellen dieses Projekts lag unser Fokus auf einer modernen, benutzerfreun
   * Zurücksetzen von Passwörtern
   * Systembenachrichtigungen
 
-Die entsprechenden SMTP- und API-Schlüssel sind über das `.env`-File konfigurierbar.
+Die entsprechenden SMTP- und API-Schlüssel sind über das `.env`-File konfigurierbar
+
+Perfekt, danke für die Klarstellung! Hier ist der überarbeitete **CI/CD & Deployment**-Abschnitt, passend zum Stil deiner bisherigen README und **ohne den Inhalt der Dockerfiles oder `docker-compose.yml`**, sondern mit **klaren Verweisen und Erklärungen**:
+
+## CI/CD & Deployment
+
+Für die automatisierte Auslieferung der Anwendung nutzen wir eine GitHub Actions Pipeline in Kombination mit Docker und einem self-hosted Runner.
+
+### Workflow-Ablauf
+
+Bei jedem Push auf den `main`-Branch wird über den GitHub Actions Workflow (`.github/workflows/main.yml`) automatisch folgendes durchgeführt:
+
+1. **Semantic Release:**
+   Erstellt automatisch eine neue Version und GitHub Release, basierend auf den Commit-Messages (Conventional Commits).
+2. **Docker Build:**
+
+   * Baut das **Backend-Image** mit FastAPI und Prisma (siehe `./Dockerfile`)
+   * Baut das **Frontend-Image** mit Next.js, Auth.js, Resend und Prisma Client (siehe `./site/Dockerfile`)
+3. **Deployment (Self-Hosted Server):**
+
+   * Bestehende Container werden gestoppt
+   * Neue Images werden per `docker compose` hochgefahren (siehe `docker-compose.yml` im Serververzeichnis)
+   * Alte Docker-Images werden automatisch entfernt, um Speicher zu sparen
+
+### Docker-Setup
+
+Das Projekt besteht aus zwei Docker-Images:
+
+* **Backend-Image:**
+  Enthält den FastAPI-Server und generiert automatisch die Python-Datenbankklassen aus dem Prisma-Schema.
+
+* **Frontend-Image:**
+  Erzeugt das optimierte Next.js-Frontend, inkl. E-Mail-Funktion über Resend und Authentifizierung via Auth.js.
+
+Beide Images werden über GitHub Actions automatisch gebaut und bereitgestellt.
+
+### Docker Compose Deployment
+
+Auf dem Server wird `docker compose` verwendet, um die Anwendung im Produktionsbetrieb auszuführen.
+Dabei:
+
+* Wird eine **gemeinsame SQLite-Datenbank** im Docker Volume verwendet
+* Werden alle **Geheimnisse und Umgebungsvariablen** über `environment` gesetzt
+* Läuft der Backend-Container auf Port `8000`, der Frontend-Container auf Port `3000`
+
+### Umgebung & Konfiguration
+
+Im Compose-Setup werden u. a. folgende Dinge übergeben:
+
+* **AUTH\_SECRET** & **AUTH\_RESEND\_KEY** für Auth.js + Resend
+* **API\_URL**, **AUTH\_URL** & **DATABASE\_URL**
+* **NODE\_ENV=production**
+
+Die Werte dazu sind **nicht im Repository enthalten** – sondern liegen sicher im CI/CD-System oder im Server-Setup.
